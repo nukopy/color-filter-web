@@ -52,7 +52,3 @@ color-filter-web/
 - **グレースケール実装**: CSS `filter: grayscale(100%)`
 - **状態管理**: Chrome Storage API (sync)
 - **対応ページ**: すべてのWebページ（`chrome://` などの一部のシステムページを除く）
-
-## ライセンス
-
-MIT
