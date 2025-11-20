@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Icon Generator</title>
+</head>
+<body>
+  <h2>Chrome拡張機能アイコン生成</h2>
+  <p>各サイズのアイコンを右クリック → 「名前を付けて画像を保存」で保存してください</p>
+
+  <div>
+    <h3>16x16</h3>
+    <canvas id="canvas16" width="16" height="16"></canvas>
+    <h3>48x48</h3>
+    <canvas id="canvas48" width="48" height="48"></canvas>
+    <h3>128x128</h3>
+    <canvas id="canvas128" width="128" height="128"></canvas>
+  </div>
+
+  <script>
+    function drawPalette(canvas) {
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      const scale = size / 128;
+
+      // Background
+      ctx.fillStyle = '#f0f0f0';
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2 * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 2 * scale;
+      ctx.stroke();
+
+      // Palette shape
+      ctx.fillStyle = '#888';
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2 * 0.7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 2 * scale;
+      ctx.stroke();
+
+      // Color dots
+      const colors = [
+        { x: 0.35, y: 0.35, color: '#FF6B6B' },
+        { x: 0.5, y: 0.3, color: '#4ECDC4' },
+        { x: 0.65, y: 0.35, color: '#45B7D1' },
+        { x: 0.35, y: 0.55, color: '#FFA07A' },
+        { x: 0.5, y: 0.6, color: '#98D8C8' }
+      ];
+
+      const dotSize = size * 0.08;
+      colors.forEach(dot => {
+        ctx.fillStyle = dot.color;
+        ctx.beginPath();
+        ctx.arc(size * dot.x, size * dot.y, dotSize, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Grayscale overlay (half)
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+      ctx.beginPath();
+      ctx.moveTo(size/2, size/2);
+      ctx.arc(size/2, size/2, size/2 * 0.7, -Math.PI/2, Math.PI/2);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Generate all sizes
+    drawPalette(document.getElementById('canvas16'));
+    drawPalette(document.getElementById('canvas48'));
+    drawPalette(document.getElementById('canvas128'));
+
+    // Auto-download function
+    function downloadCanvas(canvas, filename) {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Add download buttons
+    setTimeout(() => {
+      const sizes = [16, 48, 128];
+      sizes.forEach(size => {
+        const canvas = document.getElementById(`canvas${size}`);
+        const btn = document.createElement('button');
+        btn.textContent = `Download ${size}x${size}`;
+        btn.onclick = () => downloadCanvas(canvas, `icon${size}.png`);
+        canvas.parentElement.appendChild(btn);
+      });
+    }, 100);
+  </script>
+</body>
+</html>

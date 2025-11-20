@@ -1,0 +1,11 @@
+/* グレースケールフィルターのスタイル */
+html.grayscale-filter {
+  filter: grayscale(100%) !important;
+  -webkit-filter: grayscale(100%) !important;
+}
+
+/* トランジションを追加してスムーズに切り替え */
+html {
+  transition: filter 0.3s ease;
+  -webkit-transition: -webkit-filter 0.3s ease;
+}
